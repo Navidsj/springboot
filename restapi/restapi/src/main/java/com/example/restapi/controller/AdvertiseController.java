@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 @RestController
 @Data
-public class AdController{
+public class AdvertiseController{
 
     AdvertiseService advertiseService;
 

@@ -5,11 +5,25 @@ import com.example.restapi.repository.AdvertiseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Service
 public class AdvertiseService {
 
     AdvertiseRepository advertiseRepository;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AdvertiseService that = (AdvertiseService) o;
+        return Objects.equals(advertiseRepository, that.advertiseRepository);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(advertiseRepository);
+    }
 
     public AdvertiseService(AdvertiseRepository advertiseRepository) {
         this.advertiseRepository = advertiseRepository;
