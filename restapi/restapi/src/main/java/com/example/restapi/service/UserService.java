@@ -1,9 +1,7 @@
 package com.example.restapi.service;
 
 
-import com.example.restapi.model.Advertise;
 import com.example.restapi.model.User;
-import com.example.restapi.repository.AdvertiseRepository;
 import com.example.restapi.repository.UserRepository;
 import org.springframework.stereotype.Service;
 

@@ -11,6 +11,11 @@ public class UserController {
 
     UserService userService;
 
+    @GetMapping("/home")
+    String home() {
+        return "Hello World";
+    }
+
     @PostMapping("/user")
     public String newUser(@RequestBody User user) {
         System.out.println(user);

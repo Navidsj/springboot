@@ -35,4 +35,7 @@ public class User {
     @Column
     private int age;
 
+    @Column
+    private String role;
+
 }
