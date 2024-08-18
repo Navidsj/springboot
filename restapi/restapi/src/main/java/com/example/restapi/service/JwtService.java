@@ -10,6 +10,7 @@ import lombok.Getter;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import java.awt.*;
 import java.security.Key;
 import java.util.Date;
@@ -26,10 +27,9 @@ public class JwtService {
     private long jwtExpiration = 3600000;
 
 
-    // T inja chiye va chejo kar mikone
-    public <T> T extractClaims(String token, Function<Claims,T> claimResolver){
-        final  Claims claims = extractAllClaims(token);
-        return claimResolver.apply(claims);
+    // generic
+    public Claims extractClaims(String token){
+        return extractAllClaims(token);
     }
 
     public String generateToken(UserDetails userDetails) {
@@ -38,7 +38,7 @@ public class JwtService {
 
 
     public String extractUsername(String token) {
-        return extractClaims(token, Claims::getSubject);
+        return extractClaims(token).getSubject();
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
@@ -71,24 +71,23 @@ public class JwtService {
     }
 
     private Date extractExpiration(String token) {
-        return extractClaims(token,Claims::getExpiration);
+        return extractClaims(token).getExpiration();
     }
 
 
     private  Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSignInKey())
+        return Jwts.parser()
+                .verifyWith(getSignInKey())
                 .build()
-                .parseClaimsJwt(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
 
 
     // ******************************* injaro hanooz nmifahmam
-    private Key getSignInKey() {
+    private SecretKey getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

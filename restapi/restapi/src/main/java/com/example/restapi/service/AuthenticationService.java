@@ -23,7 +23,7 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    public User sinup(RegisterUserDto input){
+    public User signup(RegisterUserDto input){
         User user = new User();
         user.setUsername(input.getFullname());
         user.setPassword(passwordEncoder.encode(input.getPassword()));
@@ -34,7 +34,7 @@ public class AuthenticationService {
 
     public User authenticate(LoginUserDto input){
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(input.getEmail(),input.getPassword()));
-
+        System.out.println(userRepository.findByEmail(input.getEmail()).orElseThrow());
         return userRepository.findByEmail(input.getEmail()).orElseThrow();
     }
 

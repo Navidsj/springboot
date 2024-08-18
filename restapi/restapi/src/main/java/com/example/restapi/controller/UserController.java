@@ -3,12 +3,14 @@ package com.example.restapi.controller;
 import com.example.restapi.model.User;
 import com.example.restapi.service.UserService;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Data
 public class UserController {
 
+    @Autowired
     UserService userService;
 
     @GetMapping("/home")

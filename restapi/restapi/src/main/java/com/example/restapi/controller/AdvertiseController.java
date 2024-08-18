@@ -3,6 +3,7 @@ package com.example.restapi.controller;
 import com.example.restapi.model.Advertise;
 import com.example.restapi.service.AdvertiseService;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 @Data
 public class AdvertiseController{
 
+    @Autowired
     AdvertiseService advertiseService;
 
     @PostMapping("/user/advertise")
