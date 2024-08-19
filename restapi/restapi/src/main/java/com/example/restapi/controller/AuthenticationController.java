@@ -6,11 +6,16 @@ import com.example.restapi.model.LoginResponse;
 import com.example.restapi.model.User;
 import com.example.restapi.service.AuthenticationService;
 import com.example.restapi.service.JwtService;
+import org.redisson.Redisson;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.concurrent.TimeUnit;
 
 @RequestMapping("/auth")
 @RestController
@@ -26,9 +31,23 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto){
-        User registerdUser = authenticationService.signup(registerUserDto);
-        return ResponseEntity.ok(registerdUser);
+    public ResponseEntity<String> register(@RequestBody RegisterUserDto registerUserDto) throws InterruptedException {
+
+
+        RedissonClient redissonClient = Redisson.create();
+
+        RLock lock = redissonClient.getLock("lock");
+
+        boolean locked = lock.tryLock(10,5, TimeUnit.SECONDS);
+
+        if(locked) {
+
+            User registerdUser = authenticationService.signup(registerUserDto);
+            return ResponseEntity.ok(registerdUser.toString());
+        }else{
+            return ResponseEntity.ok("Try another time please");
+
+        }
     }
 
     @PostMapping("/login")
