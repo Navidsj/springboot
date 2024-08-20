@@ -83,9 +83,6 @@ public class JwtService {
                 .getPayload();
     }
 
-
-
-    // ******************************* injaro hanooz nmifahmam
     private SecretKey getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);

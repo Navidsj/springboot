@@ -40,21 +40,4 @@ public class JwtConfiguration {
 
 
 
-    // ino nmidonam chiye
-    @Bean
-    AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-
-        authenticationProvider.setUserDetailsService(userDetailsService());
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return authenticationProvider;
-    }
-
-
-
-
-
-
-
-
 }

@@ -1,9 +1,11 @@
 package com.example.restapi.controller;
 
+import com.example.restapi.dtos.RegisterUserDto;
 import com.example.restapi.model.User;
 import com.example.restapi.service.UserService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,9 +15,11 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/home")
-    String home() {
-        return "Hello World";
+
+
+    @PostMapping("/hello")
+    ResponseEntity<String> home(@RequestBody String body) {
+        return ResponseEntity.ok(body);
     }
 
     @PostMapping("/user")
