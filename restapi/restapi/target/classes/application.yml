@@ -1,0 +1,40 @@
+#spring.application.name=restapi
+#
+#spring.datasource.url=jdbc:postgresql://localhost:5432/divarDb
+#spring.datasource.username=postgres
+#spring.datasource.password=12345
+#
+#spring.jpa.hibernate.ddl-auto=create-drop
+#
+#logging.level.org.springframework.security=trace
+
+spring:
+  application:
+    name:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/divarDb
+    username: postgres
+    password: 12345
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+rabbitmq:
+  queue:
+    name: new-queue
+  exchange:
+    name: new-exchange
+  routing:
+    key:
+      name: routing-key
+
+
+
+logging:
+  level:
+    org:
+      springframework:
+        security: trace
+
+
+

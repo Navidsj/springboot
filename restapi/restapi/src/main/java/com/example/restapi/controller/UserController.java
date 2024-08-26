@@ -1,7 +1,7 @@
 package com.example.restapi.controller;
 
-import com.example.restapi.dtos.RegisterUserDto;
 import com.example.restapi.model.User;
+import com.example.restapi.service.RabbitMQProducer;
 import com.example.restapi.service.UserService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +15,15 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    RabbitMQProducer rabbitMQProducer;
 
 
     @PostMapping("/hello")
-    ResponseEntity<String> home(@RequestBody String body) {
+    public ResponseEntity<String> home(@RequestBody String body) {
+        System.out.println(body);
+        rabbitMQProducer.sendMessage(body);
+
         return ResponseEntity.ok(body);
     }
 
