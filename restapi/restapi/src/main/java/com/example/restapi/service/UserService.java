@@ -21,7 +21,6 @@ public class UserService {
     public String addUser(User newUser) {
 
         ArrayList<User> users = (ArrayList<User>) userRepository.findAll();
-        newUser.setId(users.size()+1);
         for(User user : users) {
             if(user.equals(newUser)) {
                return "User already exists";

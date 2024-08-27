@@ -18,7 +18,8 @@ import java.util.Objects;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "UserIdSeqGenerator", allocationSize = 1, sequenceName = "UserIdSeq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "UserIdSeqGenerator")
     private int id;
 
     @Column

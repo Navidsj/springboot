@@ -5,6 +5,7 @@ import com.example.restapi.repository.AdvertiseRepository;
 import com.example.restapi.repository.UserRepository;
 import com.example.restapi.service.AdvertiseService;
 import com.example.restapi.service.UserService;
+import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -108,7 +109,7 @@ public class AdvertiseServiceTest {
     }
 
     @Test
-    void checkGetAdvertiseById(){
+    void checkGetAdvertiseById() throws BadRequestException {
         ArrayList<Advertise> advertises = new ArrayList<>();
         advertises.add(advertise);
 

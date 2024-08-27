@@ -2,6 +2,11 @@ package com.example.restapi.service;
 
 import com.example.restapi.model.Advertise;
 import com.example.restapi.repository.AdvertiseRepository;
+import org.apache.coyote.BadRequestException;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,7 +45,12 @@ public class AdvertiseService {
     }
 
     public String addAdvertise(Advertise newAdvertise){
-        newAdvertise.setId(advertiseRepository.findAll().size()+1);
+        GeometryFactory geometryFactory = new GeometryFactory();
+        Coordinate coordinate = new Coordinate(newAdvertise.getLatitude(),newAdvertise.getLatitude(), newAdvertise.getLongitude());
+
+
+        Geometry point = geometryFactory.createPoint(coordinate);
+        newAdvertise.setLocation(point);
         advertiseRepository.save(newAdvertise);
         return "Advertise added";
     }
@@ -62,9 +72,26 @@ public class AdvertiseService {
         return "Advertise updated";
     }
 
-    public Advertise getAdvertise(long advertiseId){
-        return  advertiseRepository.findById(advertiseId).get();
+    public Advertise getAdvertise(int advertiseId) throws BadRequestException {
+        return  advertiseRepository
+                .findById((long) advertiseId)
+                .orElseThrow(() -> new BadRequestException("Advertise not found!"));
     }
 
 
+    public ArrayList<Integer> getNearbyAdvertise(int advertiseId) throws BadRequestException {
+
+        GeometryFactory geometryFactory = new GeometryFactory();
+
+        Geometry geom = geometryFactory.createPoint(new Coordinate(getAdvertise(advertiseId).getLatitude(),getAdvertise(advertiseId).getLongitude()));
+        ArrayList<Integer> nearbyAdvertiseId = advertiseRepository.findNearby(geom);
+
+        return nearbyAdvertiseId;
+    }
+
+    public long getDistance(int advertiseId1, int advertiseId2) throws BadRequestException {
+        Geometry location1 = getAdvertise(advertiseId1).getLocation();
+        Geometry location2 = getAdvertise(advertiseId2).getLocation();
+        return (long) location1.distance(location2);
+    }
 }
